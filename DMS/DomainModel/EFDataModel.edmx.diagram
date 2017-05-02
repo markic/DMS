@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="13afd901088f48ac9401c0ffa66e5e02" Name="Diagram1">
+        <EntityTypeShape EntityType="DMSDataBaseModel.tAuthorizationRole" Width="1.5" PointX="12.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DMSDataBaseModel.tComment" Width="1.5" PointX="9.875" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DMSDataBaseModel.tDocument" Width="1.5" PointX="3.25" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DMSDataBaseModel.tDocumentAccessRight" Width="1.875" PointX="0.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DMSDataBaseModel.tDocumentVersion" Width="1.75" PointX="7" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DMSDataBaseModel.tKeyword" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DMSDataBaseModel.tUser" Width="1.5" PointX="9.875" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DMSDataBaseModel.tUserDocument" Width="2" PointX="3.25" PointY="0.5" IsExpanded="true" />
+        <AssociationConnector Association="DMSDataBaseModel.FK_User_AutorizationRole" ManuallyRouted="false" />
+        <AssociationConnector Association="DMSDataBaseModel.FK_Comment_DocumentVersion_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="DMSDataBaseModel.FK_Comment_User_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="DMSDataBaseModel.FK__tUserDocu__Docum__19DFD96B" ManuallyRouted="false" />
+        <AssociationConnector Association="DMSDataBaseModel.FK_Version_Document_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="DMSDataBaseModel.FK__tUserDocu__Docum__1AD3FDA4" ManuallyRouted="false" />
+        <AssociationConnector Association="DMSDataBaseModel.FK__tUserDocu__UserI__18EBB532" ManuallyRouted="false" />
+        <AssociationConnector Association="DMSDataBaseModel.tDocumentKeyword" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

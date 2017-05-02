@@ -1,0 +1,634 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DMSDataBaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tAuthorizationRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tComment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="Text" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="DocumentVersionId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tDocument">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Version" Type="int" Nullable="false" />
+          <Property Name="Guid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Extension" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="IsValid" Type="bit" Nullable="false" />
+          <Property Name="IsArchived" Type="bit" Nullable="false" />
+          <Property Name="IsLocked" Type="bit" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tDocumentAccessRight">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tDocumentKeyword">
+          <Key>
+            <PropertyRef Name="DocumentId" />
+            <PropertyRef Name="KeywordId" />
+          </Key>
+          <Property Name="DocumentId" Type="int" Nullable="false" />
+          <Property Name="KeywordId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tDocumentVersion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Version" Type="int" Nullable="false" />
+          <Property Name="Guid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="HierarchyId" Type="int" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="FilePath" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="DocumentId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tKeyword">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Version" Type="int" Nullable="false" />
+          <Property Name="Guid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar" MaxLength="500" />
+          <Property Name="HasEmptyPassword" Type="bit" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" />
+          <Property Name="ContactPhone" Type="nvarchar" MaxLength="100" />
+          <Property Name="OfficeNumber" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="IsValid" Type="bit" Nullable="false" />
+          <Property Name="AuthorizationRoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tUserDocument">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="DocumentId" Type="int" Nullable="false" />
+          <Property Name="IsReading" Type="bit" Nullable="false" />
+          <Property Name="IsWriting" Type="bit" Nullable="false" />
+          <Property Name="DocumentAccessRightId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__tUserDocu__Docum__19DFD96B">
+          <End Role="tDocument" Type="Self.tDocument" Multiplicity="1" />
+          <End Role="tUserDocument" Type="Self.tUserDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tDocument">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tUserDocument">
+              <PropertyRef Name="DocumentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tUserDocu__Docum__1AD3FDA4">
+          <End Role="tDocumentAccessRight" Type="Self.tDocumentAccessRight" Multiplicity="1" />
+          <End Role="tUserDocument" Type="Self.tUserDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tDocumentAccessRight">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tUserDocument">
+              <PropertyRef Name="DocumentAccessRightId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tUserDocu__UserI__18EBB532">
+          <End Role="tUser" Type="Self.tUser" Multiplicity="1" />
+          <End Role="tUserDocument" Type="Self.tUserDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tUserDocument">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_DocumentVersion_Id">
+          <End Role="tDocumentVersion" Type="Self.tDocumentVersion" Multiplicity="1" />
+          <End Role="tComment" Type="Self.tComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tDocumentVersion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tComment">
+              <PropertyRef Name="DocumentVersionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_User_Id">
+          <End Role="tUser" Type="Self.tUser" Multiplicity="1" />
+          <End Role="tComment" Type="Self.tComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tComment">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DK_Keyword_Id">
+          <End Role="tKeyword" Type="Self.tKeyword" Multiplicity="1" />
+          <End Role="tDocumentKeyword" Type="Self.tDocumentKeyword" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tKeyword">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tDocumentKeyword">
+              <PropertyRef Name="KeywordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Keyword_Document_Id">
+          <End Role="tDocument" Type="Self.tDocument" Multiplicity="1" />
+          <End Role="tDocumentKeyword" Type="Self.tDocumentKeyword" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tDocument">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tDocumentKeyword">
+              <PropertyRef Name="DocumentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_AutorizationRole">
+          <End Role="tAuthorizationRole" Type="Self.tAuthorizationRole" Multiplicity="1" />
+          <End Role="tUser" Type="Self.tUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tAuthorizationRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tUser">
+              <PropertyRef Name="AuthorizationRoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Version_Document_Id">
+          <End Role="tDocument" Type="Self.tDocument" Multiplicity="1" />
+          <End Role="tDocumentVersion" Type="Self.tDocumentVersion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tDocument">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tDocumentVersion">
+              <PropertyRef Name="DocumentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DMSDataBaseModelStoreContainer">
+          <EntitySet Name="tAuthorizationRole" EntityType="Self.tAuthorizationRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tComment" EntityType="Self.tComment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tDocument" EntityType="Self.tDocument" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tDocumentAccessRight" EntityType="Self.tDocumentAccessRight" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tDocumentKeyword" EntityType="Self.tDocumentKeyword" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tDocumentVersion" EntityType="Self.tDocumentVersion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tKeyword" EntityType="Self.tKeyword" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tUser" EntityType="Self.tUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tUserDocument" EntityType="Self.tUserDocument" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__tUserDocu__Docum__19DFD96B" Association="Self.FK__tUserDocu__Docum__19DFD96B">
+            <End Role="tDocument" EntitySet="tDocument" />
+            <End Role="tUserDocument" EntitySet="tUserDocument" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tUserDocu__Docum__1AD3FDA4" Association="Self.FK__tUserDocu__Docum__1AD3FDA4">
+            <End Role="tDocumentAccessRight" EntitySet="tDocumentAccessRight" />
+            <End Role="tUserDocument" EntitySet="tUserDocument" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tUserDocu__UserI__18EBB532" Association="Self.FK__tUserDocu__UserI__18EBB532">
+            <End Role="tUser" EntitySet="tUser" />
+            <End Role="tUserDocument" EntitySet="tUserDocument" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_DocumentVersion_Id" Association="Self.FK_Comment_DocumentVersion_Id">
+            <End Role="tDocumentVersion" EntitySet="tDocumentVersion" />
+            <End Role="tComment" EntitySet="tComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_User_Id" Association="Self.FK_Comment_User_Id">
+            <End Role="tUser" EntitySet="tUser" />
+            <End Role="tComment" EntitySet="tComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DK_Keyword_Id" Association="Self.FK_DK_Keyword_Id">
+            <End Role="tKeyword" EntitySet="tKeyword" />
+            <End Role="tDocumentKeyword" EntitySet="tDocumentKeyword" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Keyword_Document_Id" Association="Self.FK_Keyword_Document_Id">
+            <End Role="tDocument" EntitySet="tDocument" />
+            <End Role="tDocumentKeyword" EntitySet="tDocumentKeyword" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_AutorizationRole" Association="Self.FK_User_AutorizationRole">
+            <End Role="tAuthorizationRole" EntitySet="tAuthorizationRole" />
+            <End Role="tUser" EntitySet="tUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Version_Document_Id" Association="Self.FK_Version_Document_Id">
+            <End Role="tDocument" EntitySet="tDocument" />
+            <End Role="tDocumentVersion" EntitySet="tDocumentVersion" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DMSDataBaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tAuthorizationRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tUsers" Relationship="Self.FK_User_AutorizationRole" FromRole="tAuthorizationRole" ToRole="tUser" />
+        </EntityType>
+        <EntityType Name="tComment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Text" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DocumentVersionId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tDocumentVersion" Relationship="Self.FK_Comment_DocumentVersion_Id" FromRole="tComment" ToRole="tDocumentVersion" />
+          <NavigationProperty Name="tUser" Relationship="Self.FK_Comment_User_Id" FromRole="tComment" ToRole="tUser" />
+        </EntityType>
+        <EntityType Name="tDocument">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Version" Type="Int32" Nullable="false" />
+          <Property Name="Guid" Type="Guid" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Extension" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsValid" Type="Boolean" Nullable="false" />
+          <Property Name="IsArchived" Type="Boolean" Nullable="false" />
+          <Property Name="IsLocked" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tUserDocuments" Relationship="Self.FK__tUserDocu__Docum__19DFD96B" FromRole="tDocument" ToRole="tUserDocument" />
+          <NavigationProperty Name="tDocumentVersions" Relationship="Self.FK_Version_Document_Id" FromRole="tDocument" ToRole="tDocumentVersion" />
+          <NavigationProperty Name="tKeywords" Relationship="Self.tDocumentKeyword" FromRole="tDocument" ToRole="tKeyword" />
+        </EntityType>
+        <EntityType Name="tDocumentAccessRight">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tUserDocuments" Relationship="Self.FK__tUserDocu__Docum__1AD3FDA4" FromRole="tDocumentAccessRight" ToRole="tUserDocument" />
+        </EntityType>
+        <EntityType Name="tDocumentVersion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Version" Type="Int32" Nullable="false" />
+          <Property Name="Guid" Type="Guid" Nullable="false" />
+          <Property Name="HierarchyId" Type="Int32" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FilePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DocumentId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tComments" Relationship="Self.FK_Comment_DocumentVersion_Id" FromRole="tDocumentVersion" ToRole="tComment" />
+          <NavigationProperty Name="tDocument" Relationship="Self.FK_Version_Document_Id" FromRole="tDocumentVersion" ToRole="tDocument" />
+        </EntityType>
+        <EntityType Name="tKeyword">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tDocuments" Relationship="Self.tDocumentKeyword" FromRole="tKeyword" ToRole="tDocument" />
+        </EntityType>
+        <EntityType Name="tUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Version" Type="Int32" Nullable="false" />
+          <Property Name="Guid" Type="Guid" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="HasEmptyPassword" Type="Boolean" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ContactPhone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OfficeNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsValid" Type="Boolean" Nullable="false" />
+          <Property Name="AuthorizationRoleId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tAuthorizationRole" Relationship="Self.FK_User_AutorizationRole" FromRole="tUser" ToRole="tAuthorizationRole" />
+          <NavigationProperty Name="tComments" Relationship="Self.FK_Comment_User_Id" FromRole="tUser" ToRole="tComment" />
+          <NavigationProperty Name="tUserDocuments" Relationship="Self.FK__tUserDocu__UserI__18EBB532" FromRole="tUser" ToRole="tUserDocument" />
+        </EntityType>
+        <EntityType Name="tUserDocument">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="DocumentId" Type="Int32" Nullable="false" />
+          <Property Name="IsReading" Type="Boolean" Nullable="false" />
+          <Property Name="IsWriting" Type="Boolean" Nullable="false" />
+          <Property Name="DocumentAccessRightId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tDocument" Relationship="Self.FK__tUserDocu__Docum__19DFD96B" FromRole="tUserDocument" ToRole="tDocument" />
+          <NavigationProperty Name="tDocumentAccessRight" Relationship="Self.FK__tUserDocu__Docum__1AD3FDA4" FromRole="tUserDocument" ToRole="tDocumentAccessRight" />
+          <NavigationProperty Name="tUser" Relationship="Self.FK__tUserDocu__UserI__18EBB532" FromRole="tUserDocument" ToRole="tUser" />
+        </EntityType>
+        <Association Name="FK_User_AutorizationRole">
+          <End Role="tAuthorizationRole" Type="Self.tAuthorizationRole" Multiplicity="1" />
+          <End Role="tUser" Type="Self.tUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tAuthorizationRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tUser">
+              <PropertyRef Name="AuthorizationRoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_DocumentVersion_Id">
+          <End Role="tDocumentVersion" Type="Self.tDocumentVersion" Multiplicity="1" />
+          <End Role="tComment" Type="Self.tComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tDocumentVersion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tComment">
+              <PropertyRef Name="DocumentVersionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_User_Id">
+          <End Role="tUser" Type="Self.tUser" Multiplicity="1" />
+          <End Role="tComment" Type="Self.tComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tComment">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tUserDocu__Docum__19DFD96B">
+          <End Role="tDocument" Type="Self.tDocument" Multiplicity="1" />
+          <End Role="tUserDocument" Type="Self.tUserDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tDocument">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tUserDocument">
+              <PropertyRef Name="DocumentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Version_Document_Id">
+          <End Role="tDocument" Type="Self.tDocument" Multiplicity="1" />
+          <End Role="tDocumentVersion" Type="Self.tDocumentVersion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tDocument">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tDocumentVersion">
+              <PropertyRef Name="DocumentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tUserDocu__Docum__1AD3FDA4">
+          <End Role="tDocumentAccessRight" Type="Self.tDocumentAccessRight" Multiplicity="1" />
+          <End Role="tUserDocument" Type="Self.tUserDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tDocumentAccessRight">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tUserDocument">
+              <PropertyRef Name="DocumentAccessRightId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tUserDocu__UserI__18EBB532">
+          <End Role="tUser" Type="Self.tUser" Multiplicity="1" />
+          <End Role="tUserDocument" Type="Self.tUserDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tUserDocument">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tDocumentKeyword">
+          <End Role="tKeyword" Type="Self.tKeyword" Multiplicity="*" />
+          <End Role="tDocument" Type="Self.tDocument" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="DMSDataBaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tAuthorizationRoles" EntityType="Self.tAuthorizationRole" />
+          <EntitySet Name="tComments" EntityType="Self.tComment" />
+          <EntitySet Name="tDocuments" EntityType="Self.tDocument" />
+          <EntitySet Name="tDocumentAccessRights" EntityType="Self.tDocumentAccessRight" />
+          <EntitySet Name="tDocumentVersions" EntityType="Self.tDocumentVersion" />
+          <EntitySet Name="tKeywords" EntityType="Self.tKeyword" />
+          <EntitySet Name="tUsers" EntityType="Self.tUser" />
+          <EntitySet Name="tUserDocuments" EntityType="Self.tUserDocument" />
+          <AssociationSet Name="FK_User_AutorizationRole" Association="Self.FK_User_AutorizationRole">
+            <End Role="tAuthorizationRole" EntitySet="tAuthorizationRoles" />
+            <End Role="tUser" EntitySet="tUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_DocumentVersion_Id" Association="Self.FK_Comment_DocumentVersion_Id">
+            <End Role="tDocumentVersion" EntitySet="tDocumentVersions" />
+            <End Role="tComment" EntitySet="tComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_User_Id" Association="Self.FK_Comment_User_Id">
+            <End Role="tUser" EntitySet="tUsers" />
+            <End Role="tComment" EntitySet="tComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tUserDocu__Docum__19DFD96B" Association="Self.FK__tUserDocu__Docum__19DFD96B">
+            <End Role="tDocument" EntitySet="tDocuments" />
+            <End Role="tUserDocument" EntitySet="tUserDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Version_Document_Id" Association="Self.FK_Version_Document_Id">
+            <End Role="tDocument" EntitySet="tDocuments" />
+            <End Role="tDocumentVersion" EntitySet="tDocumentVersions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tUserDocu__Docum__1AD3FDA4" Association="Self.FK__tUserDocu__Docum__1AD3FDA4">
+            <End Role="tDocumentAccessRight" EntitySet="tDocumentAccessRights" />
+            <End Role="tUserDocument" EntitySet="tUserDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tUserDocu__UserI__18EBB532" Association="Self.FK__tUserDocu__UserI__18EBB532">
+            <End Role="tUser" EntitySet="tUsers" />
+            <End Role="tUserDocument" EntitySet="tUserDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="tDocumentKeyword" Association="Self.tDocumentKeyword">
+            <End Role="tKeyword" EntitySet="tKeywords" />
+            <End Role="tDocument" EntitySet="tDocuments" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DMSDataBaseModelStoreContainer" CdmEntityContainer="DMSDataBaseEntities">
+          <EntitySetMapping Name="tAuthorizationRoles">
+            <EntityTypeMapping TypeName="DMSDataBaseModel.tAuthorizationRole">
+              <MappingFragment StoreEntitySet="tAuthorizationRole">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tComments">
+            <EntityTypeMapping TypeName="DMSDataBaseModel.tComment">
+              <MappingFragment StoreEntitySet="tComment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="DocumentVersionId" ColumnName="DocumentVersionId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tDocuments">
+            <EntityTypeMapping TypeName="DMSDataBaseModel.tDocument">
+              <MappingFragment StoreEntitySet="tDocument">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="Guid" ColumnName="Guid" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Extension" ColumnName="Extension" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="IsArchived" ColumnName="IsArchived" />
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="LastModifiedAt" ColumnName="LastModifiedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tDocumentAccessRights">
+            <EntityTypeMapping TypeName="DMSDataBaseModel.tDocumentAccessRight">
+              <MappingFragment StoreEntitySet="tDocumentAccessRight">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tDocumentVersions">
+            <EntityTypeMapping TypeName="DMSDataBaseModel.tDocumentVersion">
+              <MappingFragment StoreEntitySet="tDocumentVersion">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="Guid" ColumnName="Guid" />
+                <ScalarProperty Name="HierarchyId" ColumnName="HierarchyId" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tKeywords">
+            <EntityTypeMapping TypeName="DMSDataBaseModel.tKeyword">
+              <MappingFragment StoreEntitySet="tKeyword">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tUsers">
+            <EntityTypeMapping TypeName="DMSDataBaseModel.tUser">
+              <MappingFragment StoreEntitySet="tUser">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="Guid" ColumnName="Guid" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="HasEmptyPassword" ColumnName="HasEmptyPassword" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ContactPhone" ColumnName="ContactPhone" />
+                <ScalarProperty Name="OfficeNumber" ColumnName="OfficeNumber" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="AuthorizationRoleId" ColumnName="AuthorizationRoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tUserDocuments">
+            <EntityTypeMapping TypeName="DMSDataBaseModel.tUserDocument">
+              <MappingFragment StoreEntitySet="tUserDocument">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+                <ScalarProperty Name="IsReading" ColumnName="IsReading" />
+                <ScalarProperty Name="IsWriting" ColumnName="IsWriting" />
+                <ScalarProperty Name="DocumentAccessRightId" ColumnName="DocumentAccessRightId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="tDocumentKeyword" TypeName="DMSDataBaseModel.tDocumentKeyword" StoreEntitySet="tDocumentKeyword">
+            <EndProperty Name="tKeyword">
+              <ScalarProperty Name="Id" ColumnName="KeywordId" />
+            </EndProperty>
+            <EndProperty Name="tDocument">
+              <ScalarProperty Name="Id" ColumnName="DocumentId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
